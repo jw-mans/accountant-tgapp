@@ -4,3 +4,5 @@ sqlalchemy
 asyncpg
 alembic
 python-dotenv
+aiogram
+requests

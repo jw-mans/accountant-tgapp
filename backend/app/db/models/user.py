@@ -22,4 +22,6 @@ class User(Base):
                                                        server_default=func.now(), 
                                                        nullable=False)
 
-    tasks = relationship('Task', back_populates='user')
+    tasks = relationship('Task', 
+                         back_populates='user',
+                         cascade='all, delete')

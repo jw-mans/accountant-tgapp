@@ -12,3 +12,4 @@ POSTGRES_PASSWORD = os.getenv("POSTGRES_PASSWORD", "password")
 TG_BOT_TOKEN = os.getenv('TG_BOT_TOKEN')
 
 DB_URL = f"postgresql+asyncpg://{POSTGRES_USER}:{POSTGRES_PASSWORD}@{POSTGRES_HOST}:{POSTGRES_PORT}/{POSTGRES_DB}"
+APP_URL = "https://wilfred-cuppy-cooperatively.ngrok-free.dev"

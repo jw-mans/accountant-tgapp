@@ -3,11 +3,6 @@ services:
     image: postgres:18
     container_name: tgapp_postgres
     restart: always
-    # environment:
-    #   POSTGRES_DB: tgapp_tasks
-    #   POSTGRES_USER: tgapp_user
-    #   POSTGRES_PASSWORD: Bot_5298
-    # TODO: replace to env_file:
     env_file:
       - ./backend/.env
     volumes: 
@@ -26,13 +21,25 @@ services:
     expose:
       - "8000"
 
+  bot:
+    build: ./backend
+    container_name: tgapp_bot
+    restart: always
+    env_file:
+      - ./backend/.env
+    depends_on:
+      - postgres
+    command: ["python", "app/bot.py"]
+
   frontend:
     build: ./frontend
     container_name: tgapp_frontend
     restart: always
+    depends_on:
+      - backend
     expose:
       - "80"
-    
+
   nginx: 
     build: ./nginx
     container_name: tgapp_nginx
