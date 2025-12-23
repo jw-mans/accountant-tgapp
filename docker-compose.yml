@@ -1,0 +1,47 @@
+services:
+  postgres:
+    image: postgres:18
+    container_name: tgapp_postgres
+    restart: always
+    # environment:
+    #   POSTGRES_DB: tgapp_tasks
+    #   POSTGRES_USER: tgapp_user
+    #   POSTGRES_PASSWORD: Bot_5298
+    # TODO: replace to env_file:
+    env_file:
+      - ./backend/.env
+    volumes: 
+      - pgdata:/var/lib/postgresql
+    ports:
+      - "5432:5432"
+      
+  backend:
+    build: ./backend
+    container_name: tgapp_backend
+    restart: always
+    env_file:
+      - ./backend/.env
+    depends_on:
+      - postgres
+    expose:
+      - "8000"
+
+  frontend:
+    build: ./frontend
+    container_name: tgapp_frontend
+    restart: always
+    expose:
+      - "80"
+    
+  nginx: 
+    build: ./nginx
+    container_name: tgapp_nginx
+    restart: always
+    ports:
+      - "80:80"
+    depends_on:
+      - frontend
+      - backend
+
+volumes:
+  pgdata:
