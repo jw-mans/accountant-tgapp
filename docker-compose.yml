@@ -31,26 +31,11 @@ services:
       - postgres
     command: ["python", "app/bot.py"]
 
-<<<<<<< Updated upstream
-  frontend:
-    build: ./frontend
-    container_name: tgapp_frontend
-    restart: always
-    depends_on:
-      - backend
-    expose:
-      - "80"
-
-  nginx: 
-    build: ./nginx
-    container_name: tgapp_nginx
-=======
   nginx:
     build:
       context: ./frontend
       dockerfile: Dockerfile
     container_name: tgapp_frontend
->>>>>>> Stashed changes
     restart: always
     ports:
       - "80:80"
