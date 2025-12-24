@@ -26,7 +26,9 @@ export async function toggleTaskStatus(id: number, currentStatus: string) {
   const res = await fetch(`${API}/tasks/${id}`, {
     method: "PATCH",
     headers: authHeaders(),
-    body: JSON.stringify({ status: currentStatus === "open" ? "done" : "open" }),
+    body: JSON.stringify({
+      status: currentStatus === "open" ? "done" : "open"
+    }),
   });
   if (!res.ok) throw new Error("Failed to update task");
 }

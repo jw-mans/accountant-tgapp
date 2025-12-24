@@ -1,16 +1,25 @@
 from fastapi import APIRouter, Request, HTTPException
 from sqlalchemy import select
+from pydantic import BaseModel
 from app.db.models.task import Task
 from app.db.session import Session
 
 router = APIRouter()
 
 
+class TaskCreate(BaseModel):
+    title: str
+
+
+class TaskUpdate(BaseModel):
+    status: str
+
+
 @router.post("/")
-async def create_task(request: Request, title: str):
+async def create_task(request: Request, data: TaskCreate):
     async with Session() as session:
         task = Task(
-            title=title,
+            title=data.title,
             user_id=request.state.user.id,
         )
         session.add(task)
@@ -29,11 +38,12 @@ async def get_tasks(request: Request):
 
 
 @router.patch("/{task_id}")
-async def update_task_status(request: Request, task_id: int):
-    data = await request.json()
-    status = data.get("status")
-
-    if status not in ("open", "done"):
+async def update_task_status(
+    request: Request,
+    task_id: int,
+    data: TaskUpdate,
+):
+    if data.status not in ("open", "done"):
         raise HTTPException(status_code=400, detail="Invalid status")
 
     async with Session() as session:
@@ -42,7 +52,7 @@ async def update_task_status(request: Request, task_id: int):
         if not task or task.user_id != request.state.user.id:
             raise HTTPException(status_code=404)
 
-        task.status = status
+        task.status = data.status
         await session.commit()
         await session.refresh(task)
         return task

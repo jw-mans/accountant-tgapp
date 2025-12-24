@@ -12,7 +12,8 @@ class User(Base):
 
     id:             Mapped[       int] = mapped_column(BigInteger, 
                                                        primary_key=True, 
-                                                       index=True)
+                                                       index=True,
+                                                       autoincrement=True)
     telegram_id:    Mapped[       int] = mapped_column(BigInteger, 
                                                        unique=True, 
                                                        index=True, 
